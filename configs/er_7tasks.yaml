@@ -1,0 +1,14 @@
+root_folder: ./data
+method: er
+
+# iamcl2r settings
+pretrained_model_path: 
+- ./pretrained_models_ckpts/learnable/ckpt_0.pt
+- ./pretrained_models_ckpts/learnable/ckpt_1.pt
+- ./pretrained_models_ckpts/learnable/ckpt_2.pt
+replace_ids: 
+- 2
+- 4
+
+# training settings
+increment: 15

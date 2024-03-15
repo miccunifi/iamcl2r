@@ -1,0 +1,16 @@
+venv/
+
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+test*
+
+TODO.md
+.env
+data/
+output/
+models_ckpts/
+pretrained_models_ckpts/
+wandb/
+docs/

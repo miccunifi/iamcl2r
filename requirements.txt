@@ -1,0 +1,10 @@
+wheel
+torch
+torchvision
+continuum
+PyYAML
+wandb
+faiss-cpu
+accelerate
+ipython
+seaborn

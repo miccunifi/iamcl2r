@@ -1,0 +1,81 @@
+# Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements
+
+
+This repo contains the source code of the Python package `iamcl2r` and it is the official implementation of **Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements**, *Niccolò Biondi, Federico Pernici, Simone Ricci, Alberto Del Bimbo* at CVPR2024. <br>
+
+The repo also contains several examples on [Google Colab](./notebooks/NOTEBOOKS.md#google-colab-links) and [IPython Notebook](./notebooks/NOTEBOOKS.md#ipython-notebooks). <br> See [NOTEBOOKS.md](./notebooks/NOTEBOOKS.md) for more details.
+We only support PyTorch for now.
+
+See our paper for a detailed description of $d$-Simplex-HOC and the Improved Asynchronous Model Compatible Lifelong Learning Representation ($\text{IAM-CL}^2\text{R}$) scenario.
+
+## Repository Overview
+
+There are several directories in this repo:
+ * [notebooks/](./notebooks/) contains the code for the [Google Colab](./notebooks/NOTEBOOKS.md#google-colab-links) and [IPython Notebook](./notebooks/NOTEBOOKS.md#ipython-notebooks) examples we provide;
+ * [src/iamcl2r/](src/iamcl2r/) contains the source code for the package `iamcl2r`;
+ * [configs/](./configs/) contains the configuration files for the examples;
+
+## Quickstart
+
+ 1. Installing `iamcl2r` is simply
+ ```bash
+ git clone https://github.com/miccunifi/iamcl2r
+ cd iamcl2r
+ make install
+ ```
+ This creates a virtual enviroment and installs all the required dependencies.
+
+2. Download the pretrained models used to replace the fine-tuned model in a $\text{IAM-CL}^2\text{R}$ training.
+```bash
+make download-pretrained-models
+```
+
+3. Run  $\text{IAM-CL}^2\text{R}$ training. We only support $d$-Simplex-HOC and ER baseline for now.
+```bash
+# d-Simplex-HOC training
+make run CONFIGS=configs/hoc.yaml
+
+# ER baseline training
+make run CONFIGS=configs/er.yaml
+```
+
+4. Run a compatibility evaluation.
+Customize the configuration file [eval.yaml](./configs/eval.yaml) by changing the checkpoint_path line:
+```yaml
+...
+checkpoint_path: <FOLDER_PATH>
+...
+```
+After that you can evaluate the compatibility of the models which checkpoints are in the FOLDER_PATH you specify above. <br>
+
+```bash
+make run CONFIGS=configs/eval.yaml
+```
+
+#### Released results
+We have released some experimental results obtained using the code in the repo.
+See [NOTEBOOKS.md](./notebooks/NOTEBOOKS.md#download-results) for more details.
+
+## Citation
+If you use this code in your research, please kindly cite the following paper:
+
+```BibTeX
+@inproceedings{biondi2024stationary,
+  title={Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements},
+  author={Biondi, Niccolò and Pernici, Federico and Ricci, Simone and Del Bimbo, Alberto},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2024},
+}
+```
+
+## Contact
+
+Please contact us or post an issue if you have any questions.
+
+
+- Niccolò Biondi <niccolo.biondi (at) unifi.it>[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/NiccoBio.svg?style=social&label=NiccoBio)](https://twitter.com/NiccoBio) [![Google Scholar Citations](https://img.shields.io/badge/Google%20Scholar-Niccolò%20Biondi-blue.svg)](https://scholar.google.com/citations?hl=en&user=B7VHm9UAAAAJ)
+- Federico Pernici <federico.pernici (at) unifi.it> [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/FedPernici.svg?style=social&label=FedPernici)](https://twitter.com/FedPernici) [![Google Scholar Citations](https://img.shields.io/badge/Google%20Scholar-Federico%20Pernici-blue.svg)](https://scholar.google.com/citations?user=I8nFKUsAAAAJ&hl=en)
+- Simone Ricci <simone.ricci (at) unifi.it>[![Google Scholar Citations](https://img.shields.io/badge/Google%20Scholar-Simone%20Ricci-blue.svg)](https://scholar.google.com/citations?user=jtj_lhAAAAAJ&hl=en)
+- Alberto Del Bimbo <alberto.delbimbo (at) unifi.it>[![Google Scholar Citations](https://img.shields.io/badge/Google%20Scholar-Alberto%20Del%20Bimbo-blue.svg)](https://scholar.google.com/citations?hl=en&user=bf2ZrFcAAAAJ)
+
+
