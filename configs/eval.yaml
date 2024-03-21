@@ -1,0 +1,7 @@
+root_folder: ./data
+method: hoc
+
+eval_only: true
+checkpoint_path: ./models_ckpts/20240318-hoc-cifar
+ntasks_eval: 7
+number_training_classes: 100
