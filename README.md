@@ -3,7 +3,7 @@
 </a>
 
 This repo contains the source code of the Python package `iamcl2r` and it is the official implementation of: <br>
-**Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements**, *Niccolò Biondi, Federico Pernici, Simone Ricci, Alberto Del Bimbo* at CVPR2024. 
+**Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements**, *Niccolò Biondi, Federico Pernici, Simone Ricci, Alberto Del Bimbo* at CVPR2024. <br>
 Arxiv link: (*coming soon*)
 <br>
 
@@ -22,7 +22,7 @@ There are several directories in this repo:
 ## Quickstart
 
 
-1. **Installation**
+1. **Installation** <br>
     Installing `iamcl2r` is simply
     ```bash
     git clone https://github.com/miccunifi/iamcl2r
@@ -49,7 +49,7 @@ There are several directories in this repo:
 
 <br>
 
-2. **Download the pretrained models**
+2. **Download the pretrained models** <br>
     These models are used to replace the fine-tuned model in a $\text{IAM-CL}^2\text{R}$ training.
     ```bash
     make download-pretrained-models
@@ -57,7 +57,7 @@ There are several directories in this repo:
 
 <br>
 
-3. **Run  $\text{IAM-CL}^2\text{R}$ training** 
+3. **Run  $\text{IAM-CL}^2\text{R}$ training**  <br>
     We only support $d$-Simplex-HOC and ER baseline for now.
     ```bash
     # d-Simplex-HOC training
@@ -70,7 +70,7 @@ There are several directories in this repo:
     ```
 
 
-4. **Run a compatibility evaluation**
+4. **Run a compatibility evaluation** <br>
     Customize the configuration file [eval.yaml](./configs/eval.yaml) by changing the `checkpoint_path` line
     ```yaml
     ...
