@@ -94,6 +94,19 @@ def resume_rng_state_dict(ckpt):
     random.setstate(ckpt['py_rng_state'])
 
 
+def check_params(args):
+    assert args.epochs > 0, "Number of epochs must be greater than 0"
+    assert args.batch_size > 0, "Batch size must be greater than 0"
+    assert args.learning_rate > 0, "Learning rate must be greater than 0"
+    assert args.momentum >= 0, "Momentum must be greater or equal to 0"
+    assert args.weight_decay >= 0, "Weight decay must be greater or equal to 0"
+    
+    assert len(args.replace_ids) <= len(args.pretrained_model_path)
+    if len(args.replace_ids) < len(args.pretrained_model_path):
+        logger.warning(f"Number of replace_ids ({len(args.replace_ids)}) is less than the number of pretrained models ({len(args.pretrained_model_path)}).")
+        logger.warning(f"The following pretrained models will not be used: {args.pretrained_model_path[len(args.replace_ids):]}")
+
+
 def is_global_master(args):
     return args.rank == 0
 
@@ -104,17 +117,6 @@ def is_local_master(args):
 
 def is_master(args, local=False):
     return is_local_master(args) if local else is_global_master(args)
-
-
-def is_using_horovod():
-    # NOTE w/ horovod run, OMPI vars should be set, but w/ SLURM PMI vars will be set
-    # Differentiating between horovod and DDP use via SLURM may not be possible, so horovod arg still required...
-    ompi_vars = ["OMPI_COMM_WORLD_RANK", "OMPI_COMM_WORLD_SIZE"]
-    pmi_vars = ["PMI_RANK", "PMI_SIZE"]
-    if all([var in os.environ for var in ompi_vars]) or all([var in os.environ for var in pmi_vars]):
-        return True
-    else:
-        return False
 
 
 def is_using_distributed():
@@ -170,7 +172,6 @@ def init_distributed_device(args):
         torch.cuda.set_device(device)
     else:
         device = 'cpu'
-    args.device = device
     device = torch.device(device)
     return device
 

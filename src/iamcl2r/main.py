@@ -12,7 +12,7 @@ from iamcl2r.logger import setup_logger
 from iamcl2r.methods import set_method_configs, HocLoss
 from iamcl2r.dataset import create_data_and_transforms, BalancedBatchSampler
 from iamcl2r.models import create_model
-from iamcl2r.utils import save_checkpoint, init_distributed_device, get_model_state_dict, is_master, broadcast_object
+from iamcl2r.utils import check_params, save_checkpoint, init_distributed_device, is_master, broadcast_object
 from iamcl2r.train import train_one_epoch, classification
 from iamcl2r.eval import evaluate
 
@@ -40,12 +40,18 @@ def main():
     
     if not osp.exists(args.data_path) and args.is_main_process:
         os.makedirs(args.data_path)
-    checkpoint_path = osp.join(*(args.output_folder, f"{datetime.datetime.now().strftime('%Y%m%d')}-{args.method}-{args.train_dataset_name}"))
-    if args.distributed:
-        checkpoint_path = broadcast_object(args, checkpoint_path)
-    args.checkpoint_path = checkpoint_path
-    if not osp.exists(args.checkpoint_path) and args.is_main_process:
-        os.makedirs(args.checkpoint_path)
+
+    if not args.eval_only:
+        checkpoint_path = osp.join(*(args.output_folder, 
+                                     f"{datetime.datetime.now().strftime('%Y%m%d')}",
+                                     f"{args.method}-{args.train_dataset_name}-{datetime.datetime.now().strftime('%H%M%S')}"
+                                    )
+                                  )
+        if args.distributed:
+            checkpoint_path = broadcast_object(args, checkpoint_path)
+        args.checkpoint_path = checkpoint_path
+        if not osp.exists(args.checkpoint_path) and args.is_main_process:
+            os.makedirs(args.checkpoint_path)
 
     log_file = f"train-{datetime.datetime.now().strftime('%H%M%S')}-gpu{device.index}.log" if not args.eval_only else f"eval.log"
     setup_logger(logfile=os.path.join(*(args.checkpoint_path, log_file)),
@@ -75,10 +81,10 @@ def main():
     
     set_method_configs(args, name=args.method)
     
+    check_params(args)
+
     if args.is_main_process:
         wandb.config.update(vars(args))
-    # accelerator = accelerator
-    args.device = device
 
     logger.info(f"Current args:\n{vars(args)}")
     logger.info(f"data of this run is stored in this path: {args.checkpoint_path}")
@@ -152,6 +158,7 @@ def main():
                                 lr=args.lr, 
                                 momentum=0.9, 
                                 )
+            scaler = torch.cuda.amp.GradScaler(enabled=args.amp)
             scheduler_lr = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=args.min_lr)
             criterion_cls = nn.CrossEntropyLoss().to(device)
 
@@ -188,7 +195,8 @@ def main():
                                 device,
                                 net, 
                                 previous_net,
-                                train_loader, 
+                                train_loader,
+                                scaler,
                                 optimizer, 
                                 epoch, 
                                 criterion_cls, 
@@ -237,6 +245,9 @@ def main():
     if not args.train_only:
         logger.info(f"Starting Evaluation")
         if args.eval_only:
+            assert osp.exists(args.checkpoint_path), f"Checkpoint path {args.checkpoint_path} does not exist"
+            valid_ckpts_name = [1 for i in range(args.ntasks_eval) if osp.exists(osp.join(args.checkpoint_path,(f"ckpt_{i}.pt")))]
+            assert len(valid_ckpts_name) == args.ntasks_eval, f"Checkpoint path {args.checkpoint_path} does not have all the required checkpoints or valid name format (ckpt_<TASK_ID>.pt)"
             args.classes_at_task = [np.arange(0, (i+1)*(args.number_training_classes//args.ntasks_eval)) for i in range(args.ntasks_eval)]
         data = create_data_and_transforms(args, mode="identification")
         query_loader = data["query_loader"]

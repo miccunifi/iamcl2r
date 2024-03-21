@@ -12,6 +12,7 @@ def train_one_epoch(args,
                     net, 
                     previous_net, 
                     train_loader, 
+                    scaler,
                     optimizer,
                     epoch, 
                     criterion_cls, 
@@ -53,8 +54,11 @@ def train_one_epoch(args,
                 else:
                     raise NotImplementedError(f"Method {args.method} not implemented")
         
-        loss.backward()
-        optimizer.step()
+        # loss.backward()
+        # optimizer.step()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
 
         loss_meter.update(loss.item(), inputs.size(0))
 

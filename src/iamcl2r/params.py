@@ -27,7 +27,7 @@ class ExperimentParams():
     replace_model_architecture: bool = False
 
     # training settings
-    amp: bool = False
+    amp: bool = True
     train_only: bool = False
     epochs: int = 70
     batch_size: int = 128
@@ -47,6 +47,7 @@ class ExperimentParams():
 
     # only eval settings
     eval_only: bool = False
+    resume_path: str = ''
     number_training_classes: int = 100
     ntasks_eval: int = 1
 
