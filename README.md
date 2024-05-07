@@ -4,7 +4,9 @@
 
 This repo contains the source code of the Python package `iamcl2r` and it is the official implementation of: <br>
 **Stationary Representations: Optimally Approximating Compatibility and Implications for Improved Model Replacements**, *Niccolò Biondi, Federico Pernici, Simone Ricci, Alberto Del Bimbo* at CVPR2024. <br>
-Arxiv link: (*coming soon*)
+Our paper has been selected as **Poster Highlight** (notable top 2.8%).
+<br>
+Arxiv link: https://arxiv.org/abs/2405.02581
 <br>
 
 The repo also contains several examples on [Google Colab](./notebooks/NOTEBOOKS.md#google-colab-links) and [IPython Notebook](./notebooks/NOTEBOOKS.md#ipython-notebooks). <br> See [NOTEBOOKS.md](./notebooks/NOTEBOOKS.md) for more details.
