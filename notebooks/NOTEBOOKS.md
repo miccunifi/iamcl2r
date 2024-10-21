@@ -3,8 +3,8 @@
 We provide both Google Colab and IPython Notebooks. They contain the same code.
 
 ## Google Colab links
-- [$\text{IAM-CL}^2\text{R}$ with $d$-Simplex-HOC](https://colab.research.google.com/drive/11GuNPe3DSvS0qZzCRCuC1nUs7ejOuTvQ?usp=sharing)
-- [$\text{IAM-CL}^2\text{R}$ with ER baseline](https://colab.research.google.com/drive/1zzzLP_rSYDrVn8U_EXmhaIJ60MIKZRY0?usp=sharing)
+- [IAM-CL2R with d-Simplex-HOC](https://colab.research.google.com/drive/11GuNPe3DSvS0qZzCRCuC1nUs7ejOuTvQ?usp=sharing)
+- [IAM-CL2R with ER baseline](https://colab.research.google.com/drive/1zzzLP_rSYDrVn8U_EXmhaIJ60MIKZRY0?usp=sharing)
 - [Compatibility evaluation script](https://colab.research.google.com/drive/1bDHXF_i1kWRO20LqDbxxaNY5D-zsdZ_k?usp=sharing)
 
 ## IPython Notebooks
